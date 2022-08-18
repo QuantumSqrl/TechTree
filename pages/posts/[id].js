@@ -49,7 +49,8 @@ export default class Post extends React.Component {
       editFlag: 0,
       newData: props.postData.contentMd,
       id: '',
-      cid: 0
+      cid: 0,
+      content: '',
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -74,7 +75,7 @@ export default class Post extends React.Component {
     this.saveCID(cid);
   }
 
-  saveCID(cid) {
+  async saveCID(cid) {
     const db = getDatabase();
   
     // A post entry.
@@ -94,45 +95,101 @@ export default class Post extends React.Component {
     return update(ref(db), updates);
   }
 
+  async getCID(id) {
+    const db = getDatabase();
+    const postRef = ref(db, id);
+
+    return new Promise((resolve) => {
+      onValue(postRef, (snapshot) => {
+        const data = snapshot.val();
+        console.log("CID: " + data['id']);
+        resolve(data['id']);
+      });
+    })
+  }
+  
+  async getData(cid) {
+    console.log("1");
+    const url = 'https://' + cid + '.ipfs.dweb.link';
+    const res = await this.getIPFS(url);
+    if (res == undefined) {
+      return "Error";
+    }
+    return res.toString();
+  
+  }
+  
+  async getIPFS(url) {
+    try {
+      const response = await axios.get(url);
+  
+      return response.data;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async admin() {
+    const cid = await this.getCID(this.props.postData.id, this.getData);
+    console.log("1" + cid);
+
+    const ipfs = await this.getData(cid);
+    console.log("2" + ipfs);
+
+    this.setState({content: ipfs});
+  }
+
   render() {
+    // call the cid and ipfs stuff, if !data, render a loading thing, if data then do the thing already here
+    /// CID and actual article info processing
+    this.admin();
+
+    if(!this.state.content) {
+      return (
+        <Layout>
+          <div>
+            <h1>Loading...</h1>
+          </div>
+        </Layout>
+      )
+    }
 
     if (this.state.editFlag == 1) {
       return (
         <Layout>
-        <Head>
-          <title>{this.props.postData.title}</title>
-        </Head>
-        <h1 className={utilStyles.headingXl}>{this.props.postData.title}</h1>
+          <Head>
+            <title>{this.props.postData.title}</title>
+          </Head>
+          <h1 className={utilStyles.headingXl}>{this.props.postData.title}</h1>
 
-        <form onSubmit={this.handleSubmit} >
+          <form onSubmit={this.handleSubmit} >
 
-          <textarea type="text" value={this.state.newData} onChange={this.handleChange} class="rounded-md appearance-none relative inline-block w-full h-fit px-3 py-2 border border-gray-300 placeholder-gray-500 text-white-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-md"/>
-          <br/>
-          <input class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded" type="submit" value="Submit" />
-        </form>
+            <textarea type="text" value={this.state.newData} onChange={this.handleChange} class="rounded-md appearance-none relative inline-block w-full h-fit px-3 py-2 border border-gray-300 placeholder-gray-500 text-white-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-md"/>
+            <br/>
+            <input class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded" type="submit" value="Submit" />
+          </form>
 
-        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded" onClick={() => {this.setState({editFlag: 0})}} >Cancel</button>
-      </Layout>
-      
-      
-      
+          <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded" onClick={() => {this.setState({editFlag: 0})}} >Cancel</button>
+        </Layout>
       )} else {
         return (
-      <Layout>
-        <Head>
-          <title>{this.props.postData.title}</title>
-        </Head>
-        <article>
-          <h1 className={utilStyles.headingXl}>{this.props.postData.title}</h1>
-          {/* <div className={utilStyles.lightText}>
-            <Date dateString={postData.date} />
-          </div> */}
-          <div dangerouslySetInnerHTML={{ __html: this.props.postData.treeHtml }} />
-          <div dangerouslySetInnerHTML={{ __html: this.props.postData.contentHtml }} />
-          <h1>{this.props.cid}</h1>
-        </article>
-        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded" onClick={() => {this.setState({editFlag: 1})}}>Edit</button>
-      </Layout>
+          <Layout>
+            <Head>
+              <title>{this.props.postData.title}</title>
+            </Head>
+            <article>
+              <h1 className={utilStyles.headingXl}>{this.props.postData.title}</h1>
+              {/* <div className={utilStyles.lightText}>
+                <Date dateString={postData.date} />
+              </div> */}
+              <div dangerouslySetInnerHTML={{ __html: this.props.postData.treeHtml }} />
+              <div dangerouslySetInnerHTML={{ __html: this.state.content }} />
+
+              {/* <div dangerouslySetInnerHTML={{ __html: this.props.postData.contentHtml }} /> */}
+              <h1>{this.props.cid}</h1>
+            </article>
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded" onClick={() => {this.setState({editFlag: 1})}}>Edit</button>
+          </Layout>
     )}
   }
 }

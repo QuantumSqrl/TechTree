@@ -94,36 +94,6 @@ export default class Post extends React.Component {
     return update(ref(db), updates);
   }
 
-  getCID() {
-    const db = getDatabase();
-    const postRef = ref(db, this.props.postData.title);
-    onValue(postRef, (snapshot) => {
-      const data = snapshot.val();
-      console.log(data['id']);
-      this.getData(data['id']);
-      return data['id'];
-    })
-  }
-
-  async getData(cid) {
-    // get the data corresponding to that CID from IPFS
-    // once this works, I'll need to move the functions around to the proper files and then the core technical part will be done (can write the microgrant and improve UI)
-    const url = 'https://' + cid + '.ipfs.dweb.link';
-    const res = await this.getIPFS(url);
-    //const data = JSON.parse(res);
-    console.log(res);
-  }
-
-  async getIPFS(url) {
-    try {
-      const response = await axios.get(url);
-
-      return response.data;
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
   render() {
 
     if (this.state.editFlag == 1) {

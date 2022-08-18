@@ -22,13 +22,16 @@ export default function Home({ allPostsData }) {
       <Head>
         <title>WikiTechTree</title>
       </Head>
+      <section className={utilStyles.headingXl}>
+        WikiTechTree
+      </section>
       <section className={utilStyles.headingMd}>
-        <p>A collaborative, decentralized repository of information on how to build technologies essential to civilizational development. Democratizing science and engineering while preserving human progress.</p>
+        <p>A decentralized wiki about technology — democratizing engineering while preserving human progress.</p>
       </section>
 
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
         <h2 className={utilStyles.headingLg}>Articles</h2>
-        <ul className={utilStyles.list}>
+        <ul class="grid grid-cols-2 gap-4">
           {allPostsData.map(({ id, date, title }) => (
             <li className={utilStyles.listItem} key={id}>
               <Link href={`/posts/${id}`}>

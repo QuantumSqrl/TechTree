@@ -1,8 +1,6 @@
 ---
-title: 'Radio'
+title: 'Electricity'
 date: '2020-01-02'
 ---
-
-Requisite Technologies: [Electricity](http://localhost:3000/posts/pre-rendering)
 
 Subsequent Technologies: [Computer](http://localhost:3000/posts/farming)

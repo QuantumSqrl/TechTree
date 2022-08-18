@@ -4,27 +4,30 @@ import {useTheme} from 'next-themes'
 import IconButton from '@mui/material/IconButton';
 import NightlightRoundIcon from '@mui/icons-material/NightlightRound';
 import LightModeIcon from '@mui/icons-material/LightMode';
+import MenuIcon from '@mui/icons-material/Menu';
 import Link from 'next/link';
+import Image from 'next/image';
+import Logo from '../assets/wikitechtreelogo.png';
 
 export default function Header() {
     const {theme, setTheme} = useTheme();
 
     return (
-        <header className={styles.header}>
+        <header class="grid grid-cols-3">
 
-            <div className={styles.subHeader} class="grid grid-cols-3">
+                <MenuIcon className={utilStyles.topLeft}/>
 
-                <div></div>
+                <div className={utilStyles.top}>
+                    <Link href="/">
+                        <Image src={Logo} height={50} width={50} />
+                    </Link>
+                </div>
 
-                <Link href="/">
-                <a className={utilStyles.heading2Xl}>TechTreeWiki</a>
-                </Link>
-
-                <IconButton onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} color="inherit" >
-                    {theme === 'dark' ? <LightModeIcon /> : <NightlightRoundIcon />}
-                </IconButton>
-
-            </div>
+                <div className={utilStyles.topRight}>
+                    <IconButton  onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} color="inherit" >
+                        {theme === 'dark' ? <LightModeIcon className={utilStyles.topRight} /> : <NightlightRoundIcon className={utilStyles.topRight} />}
+                    </IconButton>
+                </div>
 
         </header>
     )

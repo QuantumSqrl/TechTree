@@ -1,0 +1,4 @@
+---
+title: 'Birth Control'
+date: '2020-01-01'
+---

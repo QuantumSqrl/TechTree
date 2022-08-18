@@ -6,8 +6,8 @@ import Link from 'next/link';
 import {useTheme} from 'next-themes'
 import Header from './header.js'
 
-const name = 'TechTreeWiki';
-export const siteTitle = 'TechTreeWiki';
+const name = 'WikiTechTree';
+export const siteTitle = 'WikiTechTree';
 
 export default function Layout({ children, home }) {
   const {theme, setTheme} = useTheme();

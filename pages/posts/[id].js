@@ -143,10 +143,10 @@ export default class Post extends React.Component {
 
           <textarea type="text" value={this.state.newData} onChange={this.handleChange} class="rounded-md appearance-none relative inline-block w-full h-fit px-3 py-2 border border-gray-300 placeholder-gray-500 text-white-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-md"/>
           <br/>
-          <input class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit" value="Submit" />
+          <input class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded" type="submit" value="Submit" />
         </form>
 
-        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => {this.setState({editFlag: 0})}} >Cancel</button>
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded" onClick={() => {this.setState({editFlag: 0})}} >Cancel</button>
       </Layout>
       
       
@@ -165,7 +165,7 @@ export default class Post extends React.Component {
           <div dangerouslySetInnerHTML={{ __html: this.props.postData.contentHtml }} />
           <h1>{this.props.cid}</h1>
         </article>
-        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => {this.setState({editFlag: 1})}}>Edit</button>
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded" onClick={() => {this.setState({editFlag: 1})}}>Edit</button>
       </Layout>
     )}
   }

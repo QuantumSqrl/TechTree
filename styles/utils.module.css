@@ -4,14 +4,36 @@
     font-weight: 800;
     letter-spacing: -0.05rem;
     margin: 1rem 0;
+    text-decoration: none;
+    color: inherit;
+    text-align: center;
   }
-  
+
+.top {
+  text-decoration: none;
+  color: inherit;
+  text-align: center;
+}
+
+.topRight {
+  text-decoration: none;
+  color: inherit;
+  text-align: right;
+}
+
+.topLeft {
+  text-decoration: none;
+  color: inherit;
+  text-align: left;
+}
+
   .headingXl {
     font-size: 2rem;
     line-height: 1.3;
     font-weight: 800;
     letter-spacing: -0.05rem;
     margin: 1rem 0;
+    text-align: center;
   }
   
   .headingLg {
@@ -23,6 +45,11 @@
   .headingMd {
     font-size: 1.2rem;
     line-height: 1.5;
+    /* center everything in this item */
+    margin: 1rem 0;
+    /* center */
+    text-align: center;
+
   }
   
   .borderCircle {
@@ -38,7 +65,7 @@
   }
   
   .list {
-    list-style: none;
+    /* create a box around this item */
     padding: 0;
     margin: 0;
   }

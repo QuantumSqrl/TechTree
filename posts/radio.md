@@ -3,6 +3,6 @@ title: 'Radio'
 date: '2020-01-02'
 ---
 
-Requisite Technologies: [Electricity](http://localhost:3000/posts/electricity)
+Prerequisites: [Generator](https://wikitechtree.com/posts/generator) [Kiln/Forge](https://wikitechtree.com/posts/kiln)
 
-Subsequent Technologies: [Computer](http://localhost:3000/posts/farming)
+Unlocks: [Latitude/Longitude](https://wikitechtree.com/posts/latlong)

@@ -47,10 +47,10 @@ export default class Post extends React.Component {
     super(props);
     this.state = {
       editFlag: 0,
-      newData: props.postData.contentMd,
       id: '',
       cid: 0,
       content: '',
+      newData: ''
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -113,7 +113,7 @@ export default class Post extends React.Component {
     const url = 'https://' + cid + '.ipfs.dweb.link';
     const res = await this.getIPFS(url);
     if (res == undefined) {
-      return "Error";
+      return "Error! Please try again.";
     }
     return res.toString();
   
@@ -131,12 +131,11 @@ export default class Post extends React.Component {
 
   async admin() {
     const cid = await this.getCID(this.props.postData.id, this.getData);
-    console.log("1" + cid);
 
     const ipfs = await this.getData(cid);
-    console.log("2" + ipfs);
 
     this.setState({content: ipfs});
+    this.setState({newData: ipfs});
   }
 
   render() {
@@ -147,10 +146,24 @@ export default class Post extends React.Component {
     if(!this.state.content) {
       return (
         <Layout>
-          <div>
-            <h1>Loading...</h1>
-          </div>
-        </Layout>
+        <Head>
+          <title>{this.props.postData.title}</title>
+        </Head>
+        <article>
+          <h1 className={utilStyles.headingXl}>{this.props.postData.title}</h1>
+          {/* <div className={utilStyles.lightText}>
+            <Date dateString={postData.date} />
+          </div> */}
+          <div dangerouslySetInnerHTML={{ __html: this.props.postData.treeHtml }} />
+          <br/>
+          <br/>
+          <div>Fetching the data from the decentralized web...</div>
+          <br/>
+          <br/>
+          <h1>{this.props.cid}</h1>
+        </article>
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded" onClick={() => {this.setState({editFlag: 1})}}>Edit</button>
+      </Layout>
       )
     }
 
@@ -161,15 +174,21 @@ export default class Post extends React.Component {
             <title>{this.props.postData.title}</title>
           </Head>
           <h1 className={utilStyles.headingXl}>{this.props.postData.title}</h1>
+          <div dangerouslySetInnerHTML={{ __html: this.props.postData.treeHtml }} />
+          <br/>
+          <br/>
 
           <form onSubmit={this.handleSubmit} >
 
             <textarea type="text" value={this.state.newData} onChange={this.handleChange} class="rounded-md appearance-none relative inline-block w-full h-fit px-3 py-2 border border-gray-300 placeholder-gray-500 text-white-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-md"/>
             <br/>
+            <br/>
+            <br/>
             <input class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded" type="submit" value="Submit" />
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 mx-1 rounded" onClick={() => {this.setState({editFlag: 0})}} >Cancel</button>
           </form>
 
-          <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded" onClick={() => {this.setState({editFlag: 0})}} >Cancel</button>
+
         </Layout>
       )} else {
         return (
@@ -179,13 +198,12 @@ export default class Post extends React.Component {
             </Head>
             <article>
               <h1 className={utilStyles.headingXl}>{this.props.postData.title}</h1>
-              {/* <div className={utilStyles.lightText}>
-                <Date dateString={postData.date} />
-              </div> */}
               <div dangerouslySetInnerHTML={{ __html: this.props.postData.treeHtml }} />
+              <br/>
+              <br/>
               <div dangerouslySetInnerHTML={{ __html: this.state.content }} />
-
-              {/* <div dangerouslySetInnerHTML={{ __html: this.props.postData.contentHtml }} /> */}
+              <br/>
+              <br/>
               <h1>{this.props.cid}</h1>
             </article>
             <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded" onClick={() => {this.setState({editFlag: 1})}}>Edit</button>

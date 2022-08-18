@@ -15,7 +15,9 @@ export default function Header() {
     return (
         <header class="grid grid-cols-3">
 
-                <MenuIcon className={utilStyles.topLeft}/>
+                <div className={utilStyles.topLeft}>
+                    <MenuIcon />
+                </div>
 
                 <div className={utilStyles.top}>
                     <Link href="/">

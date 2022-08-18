@@ -42,11 +42,6 @@ export async function getStaticPaths() {
     };
 }
 
-// function to save to ipfs
-
-// function to save cid to db
-
-
 export default class Post extends React.Component {
   constructor(props) {
     super(props);
@@ -54,7 +49,7 @@ export default class Post extends React.Component {
       editFlag: 0,
       newData: props.postData.contentMd,
       id: '',
-      cid: this.getCID()
+      cid: 0
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -94,7 +89,7 @@ export default class Post extends React.Component {
     // Write the new post's data in the posts list 
     const updates = {};
     // updates['/posts/' + newPostKey] = postData;
-    updates[this.props.postData.title] = postData;
+    updates[this.props.postData.id] = postData;
   
     return update(ref(db), updates);
   }
@@ -162,6 +157,7 @@ export default class Post extends React.Component {
           {/* <div className={utilStyles.lightText}>
             <Date dateString={postData.date} />
           </div> */}
+          <div dangerouslySetInnerHTML={{ __html: this.props.postData.treeHtml }} />
           <div dangerouslySetInnerHTML={{ __html: this.props.postData.contentHtml }} />
           <h1>{this.props.cid}</h1>
         </article>

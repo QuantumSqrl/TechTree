@@ -26,7 +26,7 @@ export default function Home({ allPostsData }) {
         WikiTechTree
       </section>
       <section className={utilStyles.headingMd}>
-        <p>A decentralized wiki about technology — democratizing engineering while preserving human progress.</p>
+        <p>A decentralized wiki about technology — open-sourcing engineering while preserving human progress</p>
       </section>
 
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>

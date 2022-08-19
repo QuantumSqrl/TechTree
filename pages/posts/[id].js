@@ -14,6 +14,7 @@ import { initializeApp } from "firebase/app";
 import { getDatabase, ref, child, push, update, onValue } from "firebase/database";
 import { LineAxisOutlined } from '@mui/icons-material';
 import axios from 'axios';
+import { setDefaultOptions } from 'date-fns';
 
 const firebaseConfig = {
   // ...
@@ -50,7 +51,9 @@ export default class Post extends React.Component {
       id: '',
       cid: 0,
       content: '',
-      newData: ''
+      newData: '',
+      initFlag: 0,
+      submitCID: undefined
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -73,6 +76,7 @@ export default class Post extends React.Component {
     // console.log(cid);
     this.setState({id: cid});
     this.saveCID(cid);
+    this.setState({submitCID: cid});
   }
 
   async saveCID(cid) {
@@ -83,15 +87,11 @@ export default class Post extends React.Component {
       id: cid // later on, id should be the editors's username
     };
   
-    // Get a key for a new Post.
-    // var current = new Date();
-    // const newPostKey = current.toLocaleString();
-  
     // Write the new post's data in the posts list 
     const updates = {};
     // updates['/posts/' + newPostKey] = postData;
     updates[this.props.postData.id] = postData;
-  
+
     return update(ref(db), updates);
   }
 
@@ -109,7 +109,6 @@ export default class Post extends React.Component {
   }
   
   async getData(cid) {
-    console.log("1");
     const url = 'https://' + cid + '.ipfs.dweb.link';
     const res = await this.getIPFS(url);
     if (res == undefined) {
@@ -122,7 +121,7 @@ export default class Post extends React.Component {
   async getIPFS(url) {
     try {
       const response = await axios.get(url);
-  
+
       return response.data;
     } catch (err) {
       console.log(err);
@@ -135,7 +134,15 @@ export default class Post extends React.Component {
     const ipfs = await this.getData(cid);
 
     this.setState({content: ipfs});
-    this.setState({newData: ipfs});
+
+    if (this.state.initFlag == 0) {
+      console.log("1");
+      if (ipfs != undefined) {
+        console.log("2");
+        this.setState({ newData: this.state.content});
+        this.setState({ initFlag: 1 });
+      }
+    }
   }
 
   render() {
@@ -167,7 +174,7 @@ export default class Post extends React.Component {
       )
     }
 
-    if (this.state.editFlag == 1) {
+    if (this.state.editFlag == 1 && this.state.submitCID == undefined) {
       return (
         <Layout>
           <Head>
@@ -177,9 +184,8 @@ export default class Post extends React.Component {
           <div dangerouslySetInnerHTML={{ __html: this.props.postData.treeHtml }} />
           <br/>
           <br/>
-
+          
           <form onSubmit={this.handleSubmit} >
-
             <textarea type="text" value={this.state.newData} onChange={this.handleChange} class="rounded-md appearance-none relative inline-block w-full h-fit px-3 py-2 border border-gray-300 placeholder-gray-500 text-white-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-md"/>
             <br/>
             <br/>
@@ -190,7 +196,29 @@ export default class Post extends React.Component {
 
 
         </Layout>
-      )} else {
+      )} else if (this.state.editFlag == 1 && this.state.submitCID != undefined) {
+        return (
+          <Layout>
+            <Head>
+              <title>{this.props.postData.title}</title>
+            </Head>
+            <h1 className={utilStyles.headingXl}>{this.props.postData.title}</h1>
+            <div dangerouslySetInnerHTML={{ __html: this.props.postData.treeHtml }} />
+            <br/>
+            <br/>
+            
+            <form onSubmit={this.handleSubmit} >
+              <textarea type="text" value={this.state.newData} onChange={this.handleChange} class="rounded-md appearance-none relative inline-block w-full h-fit px-3 py-2 border border-gray-300 placeholder-gray-500 text-white-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-md"/>
+              <br/>
+              <div>Edit successfully saved! Here is the IPFS CID for reference: {this.state.submitCID} </div>
+              <br/>
+              <input class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded" type="submit" value="Submit" />
+              <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 mx-1 rounded" onClick={() => {this.setState({editFlag: 0})}} >Cancel</button>
+            </form>
+  
+  
+          </Layout>
+        )} else {
         return (
           <Layout>
             <Head>

@@ -23,7 +23,7 @@ export default function Home({ allPostsData }) {
         <title>WikiTechTree</title>
       </Head>
       <section className={utilStyles.headingXl}>
-        WikiTechTree
+      TechTreeWiki
       </section>
       <section className={utilStyles.headingMd}>
         <p>A decentralized wiki about technology — open-sourcing engineering while preserving human progress</p>

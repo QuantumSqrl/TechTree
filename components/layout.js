@@ -6,8 +6,8 @@ import Link from 'next/link';
 import {useTheme} from 'next-themes'
 import Header from './header.js'
 
-const name = 'WikiTechTree';
-export const siteTitle = 'WikiTechTree';
+const name = 'TechTreeWiki';
+export const siteTitle = 'TechTreeWiki';
 
 export default function Layout({ children, home }) {
   const {theme, setTheme} = useTheme();
@@ -18,7 +18,7 @@ export default function Layout({ children, home }) {
         <link rel="icon" href="/favicon.ico" />
         <meta
           name="description"
-          content="Learn how to build a personal website using Next.js"
+          content=""
         />
         <meta
           property="og:image"

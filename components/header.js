@@ -58,7 +58,7 @@ export default class Header extends React.Component {
                     {this.state.uns 
                     ?
                         <Button sx={{
-                            color: 'white'
+                            
             
                         }}
                         onClick={() => this.logout()}>
@@ -66,7 +66,7 @@ export default class Header extends React.Component {
                         </Button>
                     :
                         <Button sx={{
-                            color: 'white'
+                           
                         }}
                         onClick={() => this.doLogin()}>
                             <AccountBalanceWalletIcon />

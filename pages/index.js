@@ -20,7 +20,7 @@ export default function Home({ allPostsData }) {
   return (
     <Layout home>
       <Head>
-        <title>WikiTechTree</title>
+        <title>TechTreeWiki</title>
       </Head>
       <section className={utilStyles.headingXl}>
       TechTreeWiki
